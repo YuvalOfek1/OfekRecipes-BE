@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/recipes
-    username: recipesUser
-    password: recipesPassword
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/recipes}
+    username: ${POSTGRES_USER:recipesUser}
+    password: ${POSTGRES_PASSWORD:recipesPassword}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

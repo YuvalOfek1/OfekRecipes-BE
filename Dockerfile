@@ -8,6 +8,9 @@ WORKDIR /app
 COPY mvnw* pom.xml /app/
 COPY .mvn /app/.mvn
 
+# Ensure the Maven wrapper script is executable
+RUN chmod +x mvnw
+
 # Copy the source code to the container
 COPY src /app/src
 
