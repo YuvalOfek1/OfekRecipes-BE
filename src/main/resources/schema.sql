@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS app_users (
+    id UUID PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS recipes (
+    id UUID PRIMARY KEY,
+    fk_user_id UUID NOT NULL REFERENCES app_users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    ingredient_md TEXT NOT NULL,
+    process_md TEXT NOT NULL,
+    photo_url TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (fk_user_id) REFERENCES app_users (id) ON DELETE CASCADE
+);
+
+ALTER TABLE recipes
+ADD COLUMN IF NOT EXISTS prep_time_minutes INTEGER NULL,
+ADD COLUMN IF NOT EXISTS tags JSONB NULL,
+ADD COLUMN  IF NOT EXISTS  description TEXT NULL;
+
+CREATE INDEX if not exists idx_recipe_user ON recipes(fk_user_id);

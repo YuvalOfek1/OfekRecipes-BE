@@ -1,0 +1,22 @@
+server:
+  port: 6969
+  servlet:
+    context-path: "/api"
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/recipes
+    username: recipesUser
+    password: recipesPassword
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate.hibernate.format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+uploads:
+  dir: ./uploads
