@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // Update this to your FE URL if needed
+                .allowedOrigins("http://localhost:3000", "http://host.docker.internal:3000") // Added Docker internal URL
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

@@ -7,6 +7,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
@@ -25,6 +28,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        log.info("inside jwt filter");
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String email = null;
@@ -47,19 +51,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) {
-//        String path = request.getServletPath();
-//        String method = request.getMethod();
-//        // Public POST endpoints
-//        if ("POST".equals(method) && ("/users/register".equals(path) || "/users/login".equals(path))) {
-//            return true;
-//        }
-//        // Public GET endpoints (uploads + recipes)
-//        if ("GET".equals(method)) {
-//            if (path.equals("/uploads") || path.startsWith("/uploads/")) return true;
-//            if (path.equals("/recipes") || path.startsWith("/recipes/")) return true;
-//        }
-//        return false;
-//    }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/users/register") || path.startsWith("/users/login") || path.startsWith("/uploads");
+    }
 }

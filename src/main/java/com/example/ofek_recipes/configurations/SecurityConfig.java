@@ -10,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.Customizer;
 
 @EnableWebSecurity
 @Configuration
@@ -24,6 +25,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+            .cors(Customizer.withDefaults()) // Enable CORS
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/users/register", "/users/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/uploads/**", "/recipes/**").permitAll()
