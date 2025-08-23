@@ -20,3 +20,6 @@ spring:
       max-request-size: 10MB
 uploads:
   dir: ./uploads
+
+fe:
+  url: ${FE_URL:localhost:3000}
