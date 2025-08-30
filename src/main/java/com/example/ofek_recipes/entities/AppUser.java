@@ -27,4 +27,15 @@ public class AppUser {
     String passwordHash;
     @Column
     Instant createdAt = Instant.now();
+
+    @PrePersist
+    @PreUpdate
+    public void normalizeFields() {
+        if (email != null) {
+            email = email.toLowerCase();
+        }
+        if (name != null) {
+            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+        }
+    }
 }
